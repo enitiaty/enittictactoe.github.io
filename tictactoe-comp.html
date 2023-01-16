@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      input[type="radio"]:checked+#hi{ font-weight: bold; };
+
+      .vertical-center {
+        min-height:100%;
+        min-height:100vh;
+
+        display:flex;
+        align-items:center;
+
+      }
+
+
+      .center {
+        text-align: center;
+        border:1px solid black;
+        aspect-ratio: 1 / 1;
+      }
+
+      .turnZero{
+        background-color: white;
+      }
+      .turnOne{
+        background-image: url('turn_O.png');
+        background-size: contain;
+      }
+      .turnTwo{
+        background-image: url('turn_X.png');
+        background-size: contain;
+      }
+      .abscent {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        font-size: 80px;
+          /* font-size: 4vw;
+          width:fit-content;
+          height:fit-content;
+          position: absolute;
+          height: 90px;
+          width:400px;
+          top:calc(50% - 50px/2);
+          left:calc(50% - 50px/2); */
+      }
+    </style>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  
+  
+</head>
+<body>
+  <form onsubmit="submit()" id="play">
+    <label>Only submit 1 name if playing against computer</label>
+    <br>
+    <input type="radio" id="computer" name="choose" checked="checked">
+    <label for="computer">computer</label><br>
+    <input type="radio" id="player" name="choose">
+    <label for="player">player</label><br>
+
+    <label>name 1</label>
+    <input type="text" id="name1 hi" name="names"><br>
+    <label class="aaa">name 2</label>
+    <input type="text" id="name2" name="names" class="aaa"><br>
+
+    <input type="submit" value="Submit">
+
+
+  </form>
+
+  <div id="win-text" class="abscent">YOUWIN</div>
+
+
+
+  <div class="vertical-center">
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-3"></div> 
+          <div class="col-2 center turnZero" id="0"></div> 
+          <div class="col-2 center turnZero" id="1"></div> 
+          <div class="col-2 center turnZero" id="2"></div> 
+          <div class="col-3"></div> 
+        </div>
+        <div class="row">
+          <div class="col-3"></div> 
+          <div class="col-2 center turnZero" id="3"></div> 
+          <div class="col-2 center turnTwo" id="4"></div> 
+          <div class="col-2 center turnZero" id="5"></div> 
+          <div class="col-3"></div> 
+        </div>
+        <div class="row">
+          <div class="col-3"></div> 
+          <div class="col-2 center turnZero" id="6"></div> 
+          <div class="col-2 center turnZero" id="7"></div> 
+          <div class="col-2 center turnZero" id="8"></div> 
+          <div class="col-3"></div> 
+        </div>
+
+
+
+
+      
+    </div>
+  </div>
+</body>
+  <script>
+    $('#play .aaa').hide()
+    $('#play input').on('change', function() {
+      if (!$('input[id="player"]:checked', '#play').val()){
+        $('#play .aaa').hide()
+      }
+      else{
+        $('#play .aaa').show()
+      }
+    });
+
+
+
+
+    single=null
+    function submit(){
+
+
+    }
+    function checkwin(input){
+      temp0=0
+      temp1=0
+      for(let i = 0; i<3; i++){
+        for (let j = 0; j < 3; j++){
+          temp0+=input[i][j];
+          temp1+=input[j][i];
+        }
+        if (temp0 == 3 || temp1 == 3){
+          return 'X';
+        } 
+        if (temp0 == -3 || temp1== -3){
+          return 'O';
+        }
+        temp0=0;
+        temp1=0;
+      }
+      temp=0
+      temp += input[0][0];
+      temp += input[1][1];
+      temp += input[2][2];
+      if (temp == 3){
+        return 'X';
+      } 
+      if (temp == -3){
+        return 'O';
+      }
+      temp=0;
+      temp += input[0][2];
+      temp += input[1][1];
+      temp += input[2][0];
+      if (temp == 3){
+        return 'X';
+      } 
+      if (temp == -3){
+        return 'O';
+      }
+      temp3=0;
+      for (let i=0; i<3; i++){
+        for (let j=0; j<3; j++){
+          temp3+=Math.abs(input[i][j]);}}
+      if (temp3==9)
+        return -1
+      return 0;
+    }
+
+    let field=[
+      [0, 0, 0],
+      [0, 1, 0],
+      [0, 0, 0]
+    ];
+    $(".abscent").hide()
+    $(".vertical-center").hide()
+    //X IS 1, O IS -1, NONE IS 0
+    $("div").click(function(){
+
+
+      if ($(this).hasClass("turnZero")){
+        squareId=Number($(this).attr('id'));
+        if (field[Math.floor(squareId/3)][squareId%3]!=-1)
+          field[Math.floor(squareId/3)][squareId%3]=-1
+        
+        
+        $(this).addClass("turnOne");
+        $(this).removeClass("turnZero");
+        
+     
+        
+      moved=false
+      for(i = 0; i <3; i++){
+        if(moved)break;
+        temp=0
+        for(j=0;j<3;j++){
+          if ((d3.sum(field[i])==2||d3.sum(field[i])==-2)&&field[i][j]==0){
+            a=document.getElementById(String(3*i+j))
+            a.classList.add("turnTwo");
+            a.classList.remove("turnZero");
+            field[i][j]=1;
+          moved=true}
+        }
+      }
+      for(i = 0; i <3; i++){
+        if(moved)break;
+        temp=0
+        for(j=0;j<3;j++){
+          temp+=field[j][i]
+        }
+        if (temp==2||temp==-2)
+        {
+          for(j=0;j<3;j++){
+            if(field[j][i]==0){
+              field[j][i]=1
+              a=document.getElementById(String(3*j+i))
+              a.classList.add("turnTwo");
+              a.classList.remove("turnZero")
+              moved=true;
+            }
+          }
+        }
+      }
+      for(i = 0; i <3; i++){
+        if(moved)break;
+        temp=0
+        for(j=0;j<3;j++){
+          if ((d3.sum(field[i])==1||d3.sum(field[i])==-1)&&field[i][j]==0){
+            a=document.getElementById(String(3*i+j))
+            a.classList.add("turnTwo");
+            a.classList.remove("turnZero");
+            field[i][j]=1;
+            moved=true
+            break
+          }
+        }
+      }
+      for(i = 0; i <3; i++){
+        if(moved)break;
+        temp=0
+        for(j=0;j<3;j++){
+          temp+=field[j][i]
+        }
+        if (temp==1||temp==-1)
+        {
+          for(j=0;j<3;j++){
+            if(field[j][i]==0){
+              field[j][i]=1
+              a=document.getElementById(String(3*j+i))
+              a.classList.add("turnTwo");
+              a.classList.remove("turnZero")
+              moved=true;
+              break
+            }
+          }
+        }
+      }
+
+
+
+
+
+
+
+      
+
+      
+
+      
+      tempWin=checkwin(field);
+        if (tempWin == -1){
+          $('.vertical-center').hide();
+          $('#win-text').text("tie");
+          $('#win-text').show();
+        }
+
+        if (tempWin!=0 && tempWin!=-1){
+          $('.vertical-center').hide();
+          $('#win-text').text(tempWin + " wins");
+          $('#win-text').show();
+
+
+
+        }
+      }     
+    })
+  </script>
+</html>
