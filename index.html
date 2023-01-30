@@ -1,0 +1,56 @@
+<head>
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+
+
+
+  <style>
+  </style>
+</head>
+<body>
+<form onsubmit="return false" id="play">
+  <br>
+  <input type="radio" id="computer" name="choose" checked="checked">
+  <label for="computer">computer</label><br>
+  <input type="radio" id="player" name="choose">
+  <label for="player">player</label><br>
+
+  <label>name 1</label>
+  <input type="text" id="name1" name="name1"><br>
+  <label class="aaa">name 2</label>
+  <input type="text" id="name2" name="name2" class="aaa"><br>
+
+  <input type="submit" value="Submit" onclick="asubmit()">
+
+
+</form>
+</body>
+<script>
+  $('#play .aaa').hide()
+  $('#play input').on('change', function() {
+    if (!$('input[id="player"]:checked', '#play').val()){
+      $('#play .aaa').hide()
+    }
+    else{
+      $('#play .aaa').show()
+    }
+  });
+
+
+  function asubmit(){
+    if ($('input[id="player"]:checked', '#play').val()){
+      a = document.getElementById('name1').value
+      b = document.getElementById('name2').value
+      console.log(`tictactoe.html/?player1=${a}&player2=${b}`)
+      // window.location.href=`tictactoe.html/?player1=${a}&player2=${b}`
+    } else {
+      a = document.getElementById('name1').value
+      // window.location.href=`tictactoe.html/?player1=${a}`
+    }
+  }
+</script>
