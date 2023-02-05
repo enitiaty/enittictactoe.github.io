@@ -15,8 +15,17 @@
         align-items:center;
 
       }
+  
+      .centerText {
+        text-align: center;
+        font-size: 2vw;
+        margin:auto;
+      }
 
-
+      .centerDiv {
+        align-items: center;
+        display: flex;
+      }
       .center {
         text-align: center;
         border:1px solid black;
@@ -60,7 +69,6 @@
   
 </head>
 <body>
-
   <div id="win-text" class="abscent">YOUWIN</div>
 
 
@@ -75,11 +83,11 @@
           <div class="col-3"></div> 
         </div>
         <div class="row">
-          <div class="col-3"></div> 
+          <div class="col-3 centerDiv"><p class="centerText" id="name1"></p></div> 
           <div class="col-2 center turnZero" id="3"></div> 
           <div class="col-2 center turnTwo" id="4"></div> 
           <div class="col-2 center turnZero" id="5"></div> 
-          <div class="col-3"></div> 
+          <div class="col-3 centerDiv"><p class="centerText" id="name2"></p></div> 
         </div>
         <div class="row">
           <div class="col-3"></div> 
@@ -94,14 +102,18 @@
 
       
     </div>
+  
   </div>
 </body>
   <script>
     const query=window.location.search
     const params=new URLSearchParams(query)
     user1Name=params.get('player1')
+    const name1 = document.getElementById('name1')
+    const name2 = document.getElementById('name2')
+    name1.innerText='player X: computer'
+    name2.innerText='player O: '+user1Name
 
-    alert(user1Name)
     single=null
     function checkwin(input){
       temp0=0
